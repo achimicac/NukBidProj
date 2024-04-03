@@ -1,0 +1,10 @@
+
+POST http://localhost:3380/regis
+Content-Type: multipart/form-data
+
+{
+      "productImg": 
+}
+
+###
+GET http://localhost:3380/regis
