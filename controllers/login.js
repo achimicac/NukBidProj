@@ -13,10 +13,10 @@ export const login = async (req, res) => {
             res.json({text: "Don't found this user"})
       }
 
-      const checkPassword = await bcrypt.compare(password, findUser.password)
+      /*const checkPassword = await bcrypt.compare(password, findUser.password)
       if (!checkPassword) {
             res.json({text: "Password doesn't match"})
-      }
+      }*/
 
       try {
             const token = jwt.sign(

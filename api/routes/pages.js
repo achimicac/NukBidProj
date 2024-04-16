@@ -1,10 +1,9 @@
 import express from "express";
-import Users from "../models/Users.js"
 
 import { signup } from "../../controllers/signup.js";
 import { login } from "../../controllers/login.js";
 import { logout } from "../../controllers/logout.js";
-import { home } from "../../controllers/home.js";
+import { userHome } from "../../controllers/userHome.js";
 import { VerifyAdmin, VerifyUser } from "../../controllers/verify.js";
 import { addProduct } from "../../controllers/Admin/addProduct.js";
 import { userBidding, userWin } from "../../controllers/User/userStatus.js";
@@ -22,7 +21,6 @@ const upload = multer({ })
 router.post('/admin', VerifyAdmin)
 router.post('/user', VerifyUser)
 
-
 ////////////////////////////// Real
 
 router.post('/signup', signup)
@@ -30,13 +28,13 @@ router.post('/login', login)
 router.get('/logout', logout)
 
 /* -----  Admin ----- */
-router.get('/admin/home', home)
+router.get('/admin/home', userHome)
 router.get('/admin/products/success', goodsSuccess)
 router.post('/admin/home/addProduct', upload.array('image', 5), addProduct)
 router.get('/admin/products/:goodsid', goodInfo)
 
 /* ----- User ----- */
-router.get('/user/home', home)
+router.get('/user/home', userHome)
 router.get('/user/products/bidding', userBidding)
 router.get('/user/products/win', userWin)
 router.get('/user/products/:goodsid', goodInfo)
@@ -45,5 +43,8 @@ router.get('/user/products/:goodsid', goodInfo)
 router.get('/user/profile', profile)
 router.get('/user/profile/edit', profile)
 router.put('/user/profile/edit', editprofile)
+
+/* Alreary success */
+//goodInfo, VerifyAdmin and User, Login(อย่าลืมแก้เข้ารหัสคืนด้วย), Signup, Logout, userStatus
 
 export default router;

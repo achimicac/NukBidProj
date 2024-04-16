@@ -1,3 +1,4 @@
+import { text } from "express";
 import Users from "../api/models/Users.js";
 import bcrypt from "bcrypt";
 
@@ -8,10 +9,9 @@ export const signup = async (req, res) => {
       }
 
       //const findUsers = await Users.find({$or: [{username: "owachiii"}, {email: "samon"}]});
-      const findEmail = await Users.findOne({email: email});
-      const findUsername = await Users.findOne({username: username})
-      if (findEmail || findUsername) {
-            if ( findEmail && findEmail) {
+      const findUser = await Users.findOne({ $or: [ {email: email}, {username: username} ] });
+      if (findUser) {
+            /*if ( findEmail && findEmail) {
                   res.json({text: "This username and email have been sign up"})
             }
             else if (findUsername) {
@@ -19,7 +19,8 @@ export const signup = async (req, res) => {
             }
             else {
                   res.json({text: "This email has been sign up"})
-            }
+            }*/
+            res.json({success: false, text: "This username or email has been sign up."})
       }
 
       const salt = bcrypt.genSaltSync(parseInt(process.env.GEN_SALT));
@@ -29,8 +30,8 @@ export const signup = async (req, res) => {
       try {
             await Users.insertMany(newUser);
       } catch (error) {
-            res.json({text: "Sign up isn't success"})
+            res.json({success: false, text: "Sign up isn't success"})
       }
-      res.json({status: "success", text: "Sign up success"})
+      res.json({success: true, text: "Sign up success"})
 
 }

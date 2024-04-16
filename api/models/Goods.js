@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const goodSchema = new mongoose.Schema({
+      goodName: {
+            type: String,
+            require: true
+      },
       openPrice: {
             type: String,
             require: true,
@@ -25,12 +29,7 @@ const goodSchema = new mongoose.Schema({
       },
       properties: {
             type: String,
-      },
-      images: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Pics"
-      }]
-      
+      }
 })
 
 export default mongoose.model("Goods", goodSchema);

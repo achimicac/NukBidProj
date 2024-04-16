@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const pictureSchema = new mongoose.Schema({
+      
       picLink: [
             {
                   contentType: String,
