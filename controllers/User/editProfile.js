@@ -5,7 +5,9 @@ export const editprofile = async (req, res) => {
       try {
             const usercookie = req.cookies.userLoggedIn;
             const id = (jwt.decode(usercookie, process.env.JWT_SECRET)).id;
-            const updateprofile = {$set: {...req.body}};
+            const userpic = req.body.picture
+            const binaryData = Buffer.from(userpic.dataUrl.split(',')[1], 'base64');
+            const updateprofile = {$set: {...req.body, picture: binaryData}};
             await Users.findByIdAndUpdate(id, updateprofile)
 
           res.json({success: true, text: "Edit your profile successfully"})

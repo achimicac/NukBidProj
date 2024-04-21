@@ -1,18 +1,28 @@
 import Goods from "../../api/models/Goods.js";
+import Bidding from "../../api/models/Bidding.js"
+import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
-export const goodsSuccess = async (req, res) => {
-      /*const allGoods = await Goods.find({ status: "success" }).populate({
-            path: "images",
-            model: "Pics",
-            select: "picLink"
-      });
-      res.json(allGoods);*/
+export const userHome = async (req, res) => {
       try {
+        const usercookie = req.cookies.userLoggedIn;
+        const userId = jwt.decode(usercookie, process.env.JWT_SECRET).id;
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const bidding = (await Bidding.find({ userID:  objectId})).map(good => new mongoose.Types.ObjectId(good.goodsID));
+          
+          /*const allGoods = await Goods.find({ openPrice: "20" }).populate({
+              path: "images", 
+              model: "Pics", 
+              select: "picLink"
+          });*/
           
             const allGoods = await Goods.aggregate([
                 { 
                     $match: { 
-                        status: 'end'
+                        $and: [
+                            {_id: { $nin: bidding  }}, 
+                            {status: 'bidding'}
+                        ] 
                     }
                 },
                 {
@@ -41,7 +51,7 @@ export const goodsSuccess = async (req, res) => {
                     }
                 },
                 {
-                    $sort: { endTime: -1 }
+                    $sort: { endTime: 1 }
                 },
                 {
                     $project: {
@@ -62,4 +72,4 @@ export const goodsSuccess = async (req, res) => {
         console.error("Error fetching goods:", error);
         res.status(500).json({ success: false, text: "Failed to fetch goods" });
     }
-}
+};

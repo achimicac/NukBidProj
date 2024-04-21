@@ -1,28 +1,12 @@
-import Goods from "../api/models/Goods.js";
-import Bidding from "../api/models/Bidding.js"
-import jwt from "jsonwebtoken"
-import mongoose from "mongoose";
+import Goods from "../../api/models/Goods.js";
 
-export const userHome = async (req, res) => {
+export const adminHome = async (req, res) => {
       try {
-        const usercookie = req.cookies.userLoggedIn;
-        const userId = jwt.decode(usercookie, process.env.JWT_SECRET).id;
-        const objectId = new mongoose.Types.ObjectId(userId);
-        const bidding = (await Bidding.find({ userID:  objectId})).map(good => new mongoose.Types.ObjectId(good.goodsID));
-          
-          /*const allGoods = await Goods.find({ openPrice: "20" }).populate({
-              path: "images", 
-              model: "Pics", 
-              select: "picLink"
-          });*/
           
             const allGoods = await Goods.aggregate([
                 { 
                     $match: { 
-                        $and: [
-                            {_id: { $nin: bidding  }}, 
-                            {status: 'bidding'}
-                        ] 
+                        status: 'bidding'
                     }
                 },
                 {
@@ -51,7 +35,7 @@ export const userHome = async (req, res) => {
                     }
                 },
                 {
-                    $sort: { endTime: 1 }
+                    $sort: { _id: -1 }
                 },
                 {
                     $project: {
