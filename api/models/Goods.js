@@ -18,7 +18,6 @@ const goodSchema = new mongoose.Schema({
       },
       topBuyer: {
             type: mongoose.Schema.Types.ObjectId,
-            require: true,
             ref: "Users"
       },
       leastAdd: {
