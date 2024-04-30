@@ -10,12 +10,6 @@ export const userHome = async (req, res) => {
         const objectId = new mongoose.Types.ObjectId(userId);
         const bidding = (await Bidding.find({ userID:  objectId})).map(good => new mongoose.Types.ObjectId(good.goodsID));
           
-          /*const allGoods = await Goods.find({ openPrice: "20" }).populate({
-              path: "images", 
-              model: "Pics", 
-              select: "picLink"
-          });*/
-          
             const allGoods = await Goods.aggregate([
                 { 
                     $match: { 

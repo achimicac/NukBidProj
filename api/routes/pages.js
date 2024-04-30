@@ -17,6 +17,7 @@ import { editprofile } from "../../controllers/User/editProfile.js";
 import { userHomeSearch } from "../../controllers/User/userHomeSearch.js";
 import { adminHome } from "../../controllers/Admin/adminHome.js";
 import { goodBidding } from "../../controllers/User/goodBidding.js";
+import { sendEmail } from "../../controllers/sendEmail.js";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -31,6 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 /////////////// Test
+router.post('/sendtext', sendEmail)
 
 ////////////////////////////// Real
 router.post('/admin', VerifyAdmin)

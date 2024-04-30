@@ -15,7 +15,7 @@ export const VerifyAdmin = async (req, res, next) => {
       const isAdmin = (jwt.decode(usercookie, process.env.JWT_SECRET)).isAdmin;
       
       if ( !isAdmin ) {
-            res.json({text: "You connot access to Admin pages"})
+            res.json({success: false, text: "You connot access to Admin pages"})
       }
       next()
 }
@@ -25,7 +25,7 @@ export const VerifyUser = async (req, res, next) => {
       const isAdmin = (jwt.decode(usercookie, process.env.JWT_SECRET)).isAdmin;
       
       if ( isAdmin ) {
-            res.json({text: "You connot access to User pages"})
+            res.json({success: false, text: "You connot access to User pages"})
       }
       next()
 }
