@@ -51,6 +51,8 @@ export const goodBidding = async (req, res) => {
             const bid_good = await Goods.findOneAndUpdate({ _id: goodsId }, { topBuyer: objectId, maxPrice: price })
             sendEmail('link_product', allUser_bidding.map(user => user.email))
 
+            //เหลือทำ ไลฟ์
+
             res.json({success: true, text: "บิดล้ะ"})
       } catch (error) {
             res.json({ success: false, text: "Failed to bid good", error: error.message });

@@ -4,7 +4,6 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { Server } from "socket.io";
 
 dotenv.config();
 
@@ -40,21 +39,30 @@ mongoose.connection.on("disconnected", () => {
       console.log("MongoDB connected")
 })
 
-/*app.post("/", async (req, res) => {
-      const newUser = new Users({
-            ...req.body,
-      });
-      try {
-            await newUser.save();
-            res.status(200).send("User has been created.");
-      } catch (error) {
-            
-      }
-})*/
-
 app.use("/", router);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
       mongoConnect();
       console.log("Already connect to backend!");
 })
+
+//////////test
+import {Server} from 'socket.io'
+const io = new Server(server)
+
+// รอการ connect จาก client
+io.on('connection', (client) => {
+      console.log('user connected')
+    
+      // เมื่อ Client ตัดการเชื่อมต่อ
+      client.on('disconnect', () => {
+          console.log('user disconnected')
+      })
+  
+      // ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
+      client.on('sent-message', function (message) {
+          io.sockets.emit('new-message', message)
+      })
+  })
+
+////////////////
